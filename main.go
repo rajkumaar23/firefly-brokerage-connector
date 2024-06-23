@@ -58,20 +58,20 @@ func main() {
 			continue
 		}
 
-		fmt.Printf("%s: current balance = %.2f %s 💰\n", broker.Name(), balance, broker.Currency())
-		fmt.Printf("%s: firefly balance = %.2f %s 💰\n", broker.Name(), fireflyBalance, broker.Currency())
-
 		err = nil
-		if balance < fireflyBalance {
+		difference := balance - fireflyBalance
+		if difference <= -1 {
 			err = ff.PostTransaction(fireflyAccountID, firefly.Withdrawal, fireflyBalance-balance)
 			if err == nil {
 				fmt.Printf("%s: balance updated 📉\n", broker.Name())
 			}
-		} else if balance > fireflyBalance {
+		} else if difference >= 1 {
 			err = ff.PostTransaction(fireflyAccountID, firefly.Deposit, balance-fireflyBalance)
 			if err == nil {
 				fmt.Printf("%s: balance updated 📈\n", broker.Name())
 			}
+		} else {
+			fmt.Printf("%s: balance did not change 🤷‍♂️\n", broker.Name())
 		}
 
 		if err != nil {
