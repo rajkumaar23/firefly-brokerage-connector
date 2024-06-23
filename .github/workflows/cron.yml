@@ -1,0 +1,33 @@
+name: Nightly Cron
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "1.20"
+
+      - name: Run
+        run: go run .
+        env:
+          RH_CLIENT_ID: ${{ secrets.RH_CLIENT_ID }}
+          RH_USERNAME: ${{ secrets.RH_USERNAME }}
+          RH_PASSWORD: ${{ secrets.RH_PASSWORD }}
+          RH_DEVICE_TOKEN: ${{ secrets.RH_DEVICE_TOKEN }}
+          ZERODHA_USER_ID: ${{ secrets.ZERODHA_USER_ID }}
+          ZERODHA_PASSWORD: ${{ secrets.ZERODHA_PASSWORD }}
+          ZERODHA_TOTP_SECRET: ${{ secrets.ZERODHA_TOTP_SECRET }}
+          FIREFLY_TOKEN: ${{ secrets.FIREFLY_TOKEN }}
+          FIREFLY_HOST: ${{ vars.FIREFLY_HOST }}
+          ROBINHOOD_FIREFLY_ID: ${{ vars.ROBINHOOD_FIREFLY_ID }}
+          ZERODHA_FIREFLY_ID: ${{ vars.ZERODHA_FIREFLY_ID }}
