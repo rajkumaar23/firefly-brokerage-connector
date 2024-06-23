@@ -3,6 +3,7 @@ package brokerage
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/go-resty/resty/v2"
 )
@@ -46,6 +47,15 @@ func (r *Robinhood) Name() string {
 
 func (r *Robinhood) Currency() string {
 	return "dollars"
+}
+
+func (r *Robinhood) FireflyAccountID() (uint8, error) {
+	id, err := strconv.Atoi(os.Getenv("ROBINHOOD_FIREFLY_ID"))
+	if err != nil {
+		return 0, err
+	}
+
+	return uint8(id), nil
 }
 
 func (r *Robinhood) Prepare() {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -41,6 +42,15 @@ func (z *Zerodha) Name() string {
 
 func (z *Zerodha) Currency() string {
 	return "rupees"
+}
+
+func (z *Zerodha) FireflyAccountID() (uint8, error) {
+	id, err := strconv.Atoi(os.Getenv("ZERODHA_FIREFLY_ID"))
+	if err != nil {
+		return 0, err
+	}
+
+	return uint8(id), nil
 }
 
 func (z *Zerodha) Prepare() {
