@@ -24,6 +24,7 @@ func main() {
 	brokerages := []brokerage.Brokerage{
 		&brokerage.Robinhood{},
 		&brokerage.Zerodha{},
+		&brokerage.Fidelity{},
 	}
 
 	exitCode := 0

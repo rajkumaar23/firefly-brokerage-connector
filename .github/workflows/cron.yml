@@ -31,3 +31,5 @@ jobs:
           FIREFLY_HOST: ${{ vars.FIREFLY_HOST }}
           ROBINHOOD_FIREFLY_ID: ${{ vars.ROBINHOOD_FIREFLY_ID }}
           ZERODHA_FIREFLY_ID: ${{ vars.ZERODHA_FIREFLY_ID }}
+          FIDELITY_FIREFLY_ID: ${{ vars.FIDELITY_FIREFLY_ID }}
+          FIDELITY_BALANCE: ${{ secrets.FIDELITY_BALANCE }}
