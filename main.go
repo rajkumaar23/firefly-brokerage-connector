@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/joho/godotenv"
 	brokerage "github.com/rajkumaar23/firefly-brokerage-connector/brokerage"
@@ -16,8 +17,10 @@ func init() {
 }
 
 func main() {
+	exitCode := 0
 	brokerages := []brokerage.Brokerage{
 		&brokerage.Robinhood{},
+		&brokerage.Zerodha{},
 	}
 
 	for _, broker := range brokerages {
@@ -25,15 +28,20 @@ func main() {
 
 		err := broker.Login()
 		if err != nil {
-			fmt.Print(err)
+			exitCode = 1
+			fmt.Printf("%s: error in login: %v", broker.Name(), err)
+			continue
 		}
 
-		portfolio, err := broker.GetBalance()
+		balance, err := broker.GetBalance()
 		if err != nil {
-			fmt.Print(err)
+			fmt.Printf("%s: error fetching balance: %v", broker.Name(), err)
+			exitCode = 1
+			continue
 		}
 
-		fmt.Printf("Current equity balance: $%.2f\n", portfolio)
+		fmt.Printf("%s: current balance = %.2f %s 💰\n", broker.Name(), balance, broker.Currency())
 	}
 
+	os.Exit(exitCode)
 }
