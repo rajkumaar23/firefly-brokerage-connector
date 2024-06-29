@@ -38,6 +38,7 @@ type Transaction struct {
 	SourceID      uint8   `json:"source_id"`
 	DestinationID uint8   `json:"destination_id"`
 	Date          string  `json:"date"`
+	Category      string  `json:"category_name"`
 }
 
 type TransactionRequest struct {
@@ -67,24 +68,22 @@ func (f *Firefly) GetBalance(accountID uint8) (float64, error) {
 }
 
 func (f *Firefly) PostTransaction(accountID uint8, transferType TransactionType, amount float64) error {
-	var transaction Transaction
-	if transferType == Withdrawal {
-		transaction = Transaction{
-			Type:        string(Withdrawal),
-			Amount:      amount,
-			Description: "Loss",
-			SourceID:    accountID,
-			Date:        time.Now().Format(time.RFC3339),
-		}
-	} else {
-		transaction = Transaction{
-			Type:          string(Deposit),
-			Amount:        amount,
-			Description:   "Profit",
-			DestinationID: accountID,
-			Date:          time.Now().Format(time.RFC3339),
-		}
+	transaction := Transaction{
+		Amount:   amount,
+		Date:     time.Now().Format(time.RFC3339),
+		Category: "Brokerage",
 	}
+
+	if transferType == Withdrawal {
+		transaction.Type = string(Withdrawal)
+		transaction.Description = "Loss"
+		transaction.SourceID = accountID
+	} else {
+		transaction.Type = string(Deposit)
+		transaction.Description = "Profit"
+		transaction.DestinationID = accountID
+	}
+
 	resp, err := f.RestyClient.R().
 		SetBody(TransactionRequest{
 			Transactions: []Transaction{
