@@ -117,7 +117,7 @@ func (r *Robinhood) GetBalance() (float64, error) {
 
 	fmt.Println("robinhood: accounts list fetched ✅")
 
-	portfolioURL := fmt.Sprintf("/portfolios/%d", resp.Result().(*RobinhoodAccountsResponse).Results[0].AccountNumber)
+	portfolioURL := fmt.Sprintf("/portfolios/%d/", resp.Result().(*RobinhoodAccountsResponse).Results[0].AccountNumber)
 	resp, err = r.RestyClient.R().
 		SetResult(RobinhoodPortfolioResponse{}).
 		SetError(RobinhoodErrorResponse{}).
