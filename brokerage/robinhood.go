@@ -67,7 +67,7 @@ func (r *Robinhood) Prepare() {
 		"Accept-Language":         "en-GB,en;q=0.9",
 		"X-Robinhood-API-Version": "1.431.4",
 		"Connection":              "keep-alive",
-		"User-Agent":              "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)",
+		"User-Agent":              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
 	})
 
 }
